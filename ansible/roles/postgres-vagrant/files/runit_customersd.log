@@ -1,0 +1,2 @@
+#!/bin/sh
+exec logger -t customersd -p local0.info

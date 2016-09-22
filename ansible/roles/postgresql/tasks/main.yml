@@ -1,0 +1,49 @@
+---
+- name: Include variables with keys
+  include_vars: keys.yml
+
+- name: Add postgresql apt sources
+  template: src=postgresql.list dest=/etc/apt/sources.list.d/postgresql.list
+
+- name: Import posgresql apt key
+  apt_key:
+    id=ACCC4CF8
+    url=https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state=present
+
+- name: Install apt packages
+  apt: name={{ item }} state=installed update_cache=yes
+  with_items:
+    - postgresql-{{ postgresql_version }}
+    - postgresql-client-{{ postgresql_version }}
+    - libpq-dev
+    - python-psycopg2
+
+- name: Add pg_hba.conf template
+  template: src=pg_hba.conf dest=/etc/postgresql/{{ postgresql_version }}/main/pg_hba.conf
+  sudo: yes
+
+- name: Add postgresql.conf template
+  template: src=postgresql.conf dest=/etc/postgresql/{{ postgresql_version }}/main/postgresql.conf
+  sudo: yes
+
+- name: Start postgresql
+  service: name=postgresql state=started enabled=yes
+
+- name: Create postgresql user {{ postgresql_user }}
+  postgresql_user:
+    name={{ postgresql_user }}
+    password={{ postgresql_password }}
+    role_attr_flags=NOCREATEROLE,NOSUPERUSER,CREATEDB
+  sudo_user: postgres
+
+- name: Create postgresql databases
+  postgresql_db:
+    name={{ item }}
+    owner={{ postgresql_user }}
+    encoding="UTF-8"
+    template="template0"
+  with_items:
+    - accelerator_development
+    - accelerator_testing
+  sudo_user: postgres

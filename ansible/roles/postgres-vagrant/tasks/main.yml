@@ -1,0 +1,6 @@
+---
+- name: Install postgres
+  file:
+    path: /etc/service/customersd
+    src: /etc/sv/customersd
+    state: link

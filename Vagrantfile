@@ -11,7 +11,7 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   config.vm.box = "ubuntu/precise64"
 
-  config.vm.hostname = "engage-dev.janrain.com"
+  config.vm.hostname = "postgres"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -66,7 +66,6 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: 'echo \'LC_ALL="en_US.UTF-8"\' > /etc/default/locale'
 
   config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "ansible/playbook.yml"
-    ansible.ask_vault_pass = true
+    ansible.playbook = "ansible/vagrant.yml"
   end
 end
