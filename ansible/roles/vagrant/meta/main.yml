@@ -1,0 +1,7 @@
+---
+dependencies:
+  - {
+      role: postgresql,
+      become: yes,
+      become_user: root
+    }
