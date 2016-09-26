@@ -44,8 +44,8 @@
 
 - name: Create postgresql user postgres
   postgresql_user:
-    name="postgres"
-    password="passy"
+    name="test"
+    password="test"
     role_attr_flags=NOCREATEROLE,NOSUPERUSER,CREATEDB
   vars:
     ansible_ssh_pipelining: true
