@@ -35,8 +35,6 @@
     name="test"
     password="test"
     role_attr_flags=NOCREATEROLE,NOSUPERUSER,CREATEDB
-  vars:
-    ansible_ssh_pipelining: true
   become: yes
   become_user: postgres
 
@@ -49,7 +47,5 @@
   with_items:
     - test_db
   become: yes
-  vars:
-    ansible_ssh_pipelining: true
   become_user: postgres
 
